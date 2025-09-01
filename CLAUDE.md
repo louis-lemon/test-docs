@@ -53,14 +53,28 @@ Uses path mapping with `@/*` pointing to `./src/*` and `@/.source` pointing to t
 
 ## GitHub Pages Deployment
 
-This site is configured for automatic deployment to GitHub Pages:
+This site is configured for automatic deployment to GitHub Pages using gh-pages branch:
 
 **Configuration**:
-- `next.config.mjs` - Configured for static export with `output: 'export'`
-- `.github/workflows/deploy.yml` - GitHub Actions workflow for automated deployment
+- `next.config.mjs` - Configured for static export with SEO optimizations:
+  - `output: 'export'` for static site generation
+  - `basePath` and `assetPrefix` for GitHub Pages subdirectory support
+  - Unoptimized images for static hosting
+- `.github/workflows/deploy.yml` - Uses `peaceiris/actions-gh-pages` for gh-pages deployment
 - `.nojekyll` - Prevents Jekyll processing for GitHub Pages
 
+**SEO Features**:
+- `src/app/layout.tsx` - Comprehensive metadata including OpenGraph and Twitter cards
+- `src/app/sitemap.ts` - Automatic sitemap generation from Fumadocs content
+- `src/app/robots.ts` - SEO-friendly robots.txt configuration
+- Structured data and meta tags for better search engine indexing
+
 **Deployment Process**:
-- Push to `main` branch triggers automatic deployment
-- GitHub Actions builds the site and deploys to GitHub Pages
-- Site is available at `https://[username].github.io/[repository-name]`
+1. Push to `main` branch triggers GitHub Actions
+2. Site is built and deployed to `gh-pages` branch
+3. GitHub Pages serves from gh-pages branch
+4. Site is available at `https://louis-lemon.github.io/test-docs`
+
+**Setup Requirements**:
+- Repository Settings → Pages → Source: "Deploy from a branch"
+- Select "gh-pages" branch and "/ (root)" folder
