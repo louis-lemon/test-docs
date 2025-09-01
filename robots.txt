@@ -1,0 +1,7 @@
+User-Agent: *
+Allow: /
+Disallow: /private/
+Disallow: /_next/
+Disallow: /api/
+
+Sitemap: https://louis-lemon.github.io/test-docs/sitemap.xml
