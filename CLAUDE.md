@@ -32,6 +32,8 @@ This is a **Fumadocs** documentation site built on **Next.js 15** with **React 1
 **Key Files**:
 - `src/lib/source.ts` - Content source adapter using Fumadocs loader with `/docs` base URL
 - `src/lib/layout.shared.tsx` - Shared layout configuration including navigation and branding
+- `src/components/provider.tsx` - Custom provider with static search configuration
+- `src/app/api/search/route.ts` - Static search API using `staticGET` from Fumadocs
 - `source.config.ts` - MDX processing configuration with schema definitions
 
 ### Content Management
@@ -69,9 +71,10 @@ This site is configured for automatic deployment to GitHub Pages using gh-pages 
 - Structured data and meta tags for better search engine indexing
 
 **Static Export Considerations**:
-- API routes are not supported in static export mode
-- Search functionality works through client-side processing instead of server-side API
-- All routes use `export const dynamic = 'force-static'` for compatibility
+- API routes require `export const dynamic = 'force-static'` for static export compatibility
+- Search functionality uses static search with `staticGET` instead of regular API routes
+- Client-side search configured with `type: 'static'` in the Provider
+- `@orama/orama` package required for static search functionality
 
 **Deployment Process**:
 1. Push to `main` branch triggers GitHub Actions
