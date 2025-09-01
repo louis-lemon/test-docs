@@ -10,6 +10,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 - `yarn build` - Build production application  
 - `yarn start` - Start production server
 - `yarn deploy` - Build for GitHub Pages deployment
+- `yarn deploy:local` - Local deployment to gh-pages branch for testing
 - `yarn postinstall` - Run Fumadocs MDX processing (runs automatically after install)
 
 **Development Server**: Runs on http://localhost:3000
@@ -85,3 +86,8 @@ This site is configured for automatic deployment to GitHub Pages using gh-pages 
 **Setup Requirements**:
 - Repository Settings → Pages → Source: "Deploy from a branch"
 - Select "gh-pages" branch and "/ (root)" folder
+
+**Local Testing**:
+- `yarn deploy:local` - Builds and deploys to local gh-pages branch for testing
+- Requires `gh-pages` package (already installed as dev dependency)
+- Useful for testing deployment before pushing to GitHub
