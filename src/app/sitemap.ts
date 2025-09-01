@@ -1,6 +1,9 @@
 import { MetadataRoute } from 'next';
 import { source } from '@/lib/source';
 
+// Static export를 위한 설정
+export const dynamic = 'force-static';
+
 export default function sitemap(): MetadataRoute.Sitemap {
   const baseUrl = 'https://louis-lemon.github.io/test-docs';
   

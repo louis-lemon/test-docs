@@ -28,7 +28,6 @@ This is a **Fumadocs** documentation site built on **Next.js 15** with **React 1
 **App Structure**:
 - `/app/(home)/` - Landing page route group
 - `/app/docs/` - Documentation pages with dynamic routing via `[[...slug]]`
-- `/app/api/search/route.ts` - Search API endpoint
 
 **Key Files**:
 - `src/lib/source.ts` - Content source adapter using Fumadocs loader with `/docs` base URL
@@ -65,9 +64,14 @@ This site is configured for automatic deployment to GitHub Pages using gh-pages 
 
 **SEO Features**:
 - `src/app/layout.tsx` - Comprehensive metadata including OpenGraph and Twitter cards
-- `src/app/sitemap.ts` - Automatic sitemap generation from Fumadocs content
-- `src/app/robots.ts` - SEO-friendly robots.txt configuration
+- `src/app/sitemap.ts` - Automatic sitemap generation from Fumadocs content (with `dynamic = 'force-static'`)
+- `src/app/robots.ts` - SEO-friendly robots.txt configuration (with `dynamic = 'force-static'`)
 - Structured data and meta tags for better search engine indexing
+
+**Static Export Considerations**:
+- API routes are not supported in static export mode
+- Search functionality works through client-side processing instead of server-side API
+- All routes use `export const dynamic = 'force-static'` for compatibility
 
 **Deployment Process**:
 1. Push to `main` branch triggers GitHub Actions
