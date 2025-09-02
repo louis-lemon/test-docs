@@ -210,16 +210,16 @@ async function cleanupContent(content: string): Promise<string> {
     // YouTube 링크가 이미지로 잘못 표기된 경우 수정 (![url](url) → [url](url))
     .replace(/!\[(https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)[^\]]*)\]\(([^)]+)\)/g, '[$1]($2)')
     
-    // 일반 이미지 링크를 HTML img 태그로 변환 (width/height 속성 추가)
+    // 일반 이미지 링크를 마크다운 형식으로 유지 (Fumadocs가 마크다운 이미지를 올바르게 처리)
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
       // YouTube, Vimeo 등 동영상 링크는 제외
       if (src.match(/(?:youtube\.com|youtu\.be|vimeo\.com|dailymotion\.com)/i)) {
         return `[${alt || src}](${src})`;
       }
       
-      // 일반 이미지는 HTML img 태그로 변환하여 width/height 속성 추가
+      // 일반 이미지는 마크다운 형식으로 유지
       const altText = alt || 'image';
-      return `<img src="${src}" alt="${altText}" width="800" height="400" style="max-width: 100%; height: auto;" />`;
+      return `![${altText}](${src})`;
     })
     
     // 단순한 URL만 있는 이미지 표기 처리 (![file](url) 등)
@@ -229,7 +229,7 @@ async function cleanupContent(content: string): Promise<string> {
         return `[${src}](${src})`;
       }
       
-      return `<img src="${src}" alt="${alt}" width="800" height="400" style="max-width: 100%; height: auto;" />`;
+      return `![${alt}](${src})`;
     });
 }
 
@@ -248,16 +248,16 @@ function cleanupContentSync(content: string): string {
     // YouTube 링크가 이미지로 잘못 표기된 경우 수정 (![url](url) → [url](url))
     .replace(/!\[(https?:\/\/(?:www\.)?(?:youtube\.com|youtu\.be)[^\]]*)\]\(([^)]+)\)/g, '[$1]($2)')
     
-    // 일반 이미지 링크를 HTML img 태그로 변환 (width/height 속성 추가)
+    // 일반 이미지 링크를 마크다운 형식으로 유지 (Fumadocs가 마크다운 이미지를 올바르게 처리)
     .replace(/!\[([^\]]*)\]\(([^)]+)\)/g, (match, alt, src) => {
       // YouTube, Vimeo 등 동영상 링크는 제외
       if (src.match(/(?:youtube\.com|youtu\.be|vimeo\.com|dailymotion\.com)/i)) {
         return `[${alt || src}](${src})`;
       }
       
-      // 일반 이미지는 HTML img 태그로 변환하여 width/height 속성 추가
+      // 일반 이미지는 마크다운 형식으로 유지
       const altText = alt || 'image';
-      return `<img src="${src}" alt="${altText}" width="800" height="400" style="max-width: 100%; height: auto;" />`;
+      return `![${altText}](${src})`;
     })
     
     // 단순한 URL만 있는 이미지 표기 처리 (![file](url) 등)
@@ -267,7 +267,7 @@ function cleanupContentSync(content: string): string {
         return `[${src}](${src})`;
       }
       
-      return `<img src="${src}" alt="${alt}" width="800" height="400" style="max-width: 100%; height: auto;" />`;
+      return `![${alt}](${src})`;
     });
 }
 

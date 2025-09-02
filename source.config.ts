@@ -75,6 +75,4 @@ export default defineConfig({
   },
   // Disable image optimization to prevent external URL issues
   lastModifiedTime: 'none',
-  attachments: false,
-  generateManifest: false,
 });
