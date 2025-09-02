@@ -84,7 +84,6 @@
       "no": 307,
       "noOfElement": 33,
       "category": "development",
-      "subCategory": "project-management",
       "keywords": ["레몬에이드", "프로젝트", "라벨링", "연동", "integration"]
     },
     {
@@ -163,7 +162,6 @@
       "no": 302,
       "noOfElement": 143,
       "category": "web-development",
-      "subCategory": "frontend",
       "keywords": ["Angular", "frontend", "JavaScript", "TypeScript", "web framework"]
     },
     {
@@ -420,8 +418,6 @@
       "readme": "NOTE: some markdown string",
       "no": 258,
       "noOfElement": 4,
-      "category": "documentation",
-      "subCategory": "guide",
       "keywords": ["가이드", "문서", "documentation", "manual", "help"]
     },
     {
@@ -638,7 +634,6 @@
       "no": 146,
       "noOfElement": 228,
       "category": "productivity",
-      "subCategory": "spreadsheet",
       "keywords": ["엑셀", "Excel", "함수", "업무", "productivity"]
     },
     {

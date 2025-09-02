@@ -1,0 +1,165 @@
+## 기술 접근 전략
+
+EurekaBox 데이터를 Fumadocs로 변환하는 핵심 과제를 분석하면:
+
+1. **계층 구조 처리**: `parentId`로 연결된 문서들을 Fumadocs의 중첩 폴더 구조로 매핑
+2. **카테고리 자동화**: category/subCategory를 활용한 동적 네비게이션 생성
+3. **메타데이터 보존**: keywords, markCount 등을 frontmatter로 전환
+4. **URL 전략**: ID 기반이 아닌 의미있는 slug 생성
+
+특히 주목할 점은 C308 → C309, C310, C311 같은 부모-자식 관계와 category가 없는 문서들(C312, C290)의 처리입니다.
+
+---
+
+# PRD: Fumadocs 정적 사이트 생성 시스템
+
+## 1. 프로젝트 범위
+
+### 목표
+EurekaBox API 응답을 Fumadocs 호환 MDX 구조로 변환하여 정적 문서 사이트 구축
+
+### 핵심 요구사항
+- 계층적 문서 구조 유지
+- 카테고리별 자동 그룹화
+- 의미있는 URL 경로 생성
+- 검색 최적화를 위한 메타데이터 보존
+
+## 2. 데이터 변환 전략
+
+### 2.1 폴더 구조 매핑 (Example)
+
+```
+content/docs/
+├── aws/
+│   ├── billing/
+│   │   ├── aws-cost-alarm.mdx (C255)
+│   │   └── meta.json
+│   ├── compute/
+│   │   ├── ec2-concepts.mdx (C289)
+│   │   ├── ec2-ssh-methods.mdx (C292)
+│   │   └── meta.json
+│   ├── networking/
+│   │   ├── elb-guide.mdx (C298)
+│   │   ├── eip-concepts.mdx (C291)
+│   │   └── meta.json
+│   └── meta.json
+├── development/
+│   ├── ai-tools/
+│   │   ├── amazon-q-developer/ (C308 - parent)
+│   │   │   ├── index.mdx
+│   │   │   ├── cli-install-linux.mdx (C309)
+│   │   │   ├── mcp-setup-guide.mdx (C310)
+│   │   │   ├── q-with-mcp.mdx (C311)
+│   │   │   └── meta.json
+│   │   └── meta.json
+│   └── meta.json
+├── uncategorized/
+│   ├── plug-and-play.mdx (C290)
+│   ├── untitled-312.mdx (C312)
+│   └── meta.json
+└── meta.json
+```
+
+### 2.2 Slug 생성 규칙
+
+```typescript
+function generateSlug(doc: Document): string {
+  if (doc.title) {
+    return doc.title
+      .toLowerCase()
+      .replace(/\[.*?\]/g, '') // [AWS] 같은 prefix 제거
+      .replace(/[^\w\s가-힣-]/g, '') // 특수문자 제거
+      .replace(/\s+/g, '-') // 공백을 대시로
+      .slice(0, 60); // 길이 제한
+  }
+  return `doc-${doc.id.toLowerCase()}`;
+}
+```
+
+### 2.3 부모-자식 관계 처리
+
+부모 문서가 있는 경우:
+- 부모를 폴더로 변환 (`amazon-q-developer/`)
+- 부모 내용은 `index.mdx`로 저장
+- 자식 문서들은 동일 폴더 내 개별 파일로 저장
+
+## 3. MDX 생성 사양
+
+### 3.1 Frontmatter 구조
+
+```yaml
+---
+title: "MCP 설정 가이드"
+description: "MCP 설정 및 구성 방법에 대한 상세 가이드"
+keywords: ["MCP", "설정", "가이드", "configuration", "setup"]
+date: "2025-01-31"
+modified: "2025-01-31"
+category: "development"
+subCategory: "setup-guide"
+order: 310
+featured: false  # markCount > 0인 경우 true
+---
+```
+
+### 3.2 메타데이터 파일 구조
+
+```json
+// content/docs/development/ai-tools/meta.json
+{
+  "title": "AI Tools",
+  "defaultOpen": true,
+  "pages": [
+    {
+      "title": "Amazon Q Developer",
+      "folder": "amazon-q-developer",
+      "icon": "Robot"
+    }
+  ]
+}
+
+// content/docs/development/ai-tools/amazon-q-developer/meta.json
+{
+  "title": "Amazon Q Developer",
+  "description": "AWS의 AI 개발 도구",
+  "pages": [
+    "index",
+    "cli-install-linux",
+    "mcp-setup-guide",
+    "q-with-mcp"
+  ]
+}
+```
+
+## 4. Fumadocs 구성
+
+### 4.1 Source 설정
+
+### 4.2 동적 네비게이션
+### 4.3 검색 구성
+
+## 5. 특수 케이스 처리
+
+### 5.1 카테고리 없는 문서
+- `uncategorized` 폴더에 저장
+- 네비게이션에서 "기타" 섹션으로 표시
+- no 필드로 정렬
+
+### 5.2 제목 없는 문서 (C312)
+- `untitled-{no}` 형식으로 slug 생성
+- frontmatter에 `draft: true` 추가 고려
+
+### 5.3 긴 제목 처리
+- slug는 60자로 제한
+- 전체 제목은 frontmatter에 보존
+- 네비게이션에선 축약 표시
+
+## 6. 빌드 최적화
+
+### 6.1 증분 빌드 전략
+### 6.2 정적 생성 구성
+
+## 7. 품질 검증
+
+### 7.1 링크 검증
+### 7.2 콘텐츠 검증
+

@@ -1,0 +1,394 @@
+# PRD: EurekaBox to Fumadocs 정적 사이트 생성 시스템
+
+## 1. 시스템 개요
+
+### 1.1 목적
+EurekaBox CMS의 문서를 Fumadocs 기반 정적 사이트로 자동 변환하는 완전 자동화 파이프라인 구축
+
+### 1.2 핵심 아키텍처
+```
+EurekaBox API (Mock) → GitHub Actions → MDX Generator → Fumadocs Build → GitHub Pages
+```
+
+## 2. API 목업 사양
+
+### 2.1 Mock API 엔드포인트
+
+```typescript
+// mock-api/endpoints.ts
+interface MockAPIEndpoints {
+  // 전체 문서 목록 조회
+  GET /api/documents
+  Query Parameters:
+    - published: boolean (publishedAt이 null이 아닌 문서만)
+    - limit: number (default: 2000)
+    - page: number (default: 0)
+
+  // 단일 문서 상세 조회
+  GET /api/documents/:id
+  Response: Document with full readme content
+
+  // 카테고리 목록 조회
+  GET /api/categories
+  Response: Array of unique categories with counts
+
+  // 변경된 문서 조회 (증분 빌드용)
+  GET /api/documents/changes
+  Query Parameters:
+    - since: timestamp (마지막 동기화 시점)
+  Response: Changed document IDs
+}
+```
+
+### 2.2 Mock Data 구조
+
+```typescript
+interface MockDocument {
+  id: string;
+  no: number;
+  title?: string;
+  readme: string; // 실제 마크다운 콘텐츠
+  category?: string;
+  subCategory?: string;
+  keywords?: string[];
+  parentId?: string;
+  parent$?: { id: string };
+  markCount?: number;
+  noOfElement?: number;
+  createdAt: number;
+  updatedAt: number;
+  publishedAt?: number; // 신규 필드 - null이면 draft
+  slug?: string; // 신규 필드 - 커스텀 URL 경로
+  order?: number; // 신규 필드 - 정렬 순서
+}
+```
+
+## 3. GitHub Actions Workflow 상세
+
+### 3.1 메인 워크플로우 구조
+
+```yaml
+name: Build and Deploy Documentation
+
+on:
+  # 수동 트리거
+  workflow_dispatch:
+    inputs:
+      rebuild_all:
+        description: 'Rebuild all documents'
+        required: false
+        default: false
+        type: boolean
+
+  # 정기 동기화
+  schedule:
+    - cron: '0 */6 * * *'  # 6시간마다
+
+  # Webhook 트리거 (future)
+  repository_dispatch:
+    types: [publish_docs]
+
+env:
+  NODE_VERSION: '20'
+  EUREKA_API_URL: ${{ secrets.EUREKA_API_URL || 'mock' }}
+```
+
+### 3.2 Job 구성
+
+```yaml
+jobs:
+  fetch-and-generate:
+    name: Fetch Content and Generate MDX
+    runs-on: ubuntu-latest
+    outputs:
+      changed_count: ${{ steps.generate.outputs.changed_count }}
+
+    steps:
+      # 1. 체크아웃
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2. Node.js 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      # 3. 의존성 설치
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. 캐시 복원
+      - name: Restore build cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            .build-cache
+            content/docs
+          key: docs-cache-${{ github.sha }}
+          restore-keys: |
+            docs-cache-
+
+      # 5. Mock API 서버 시작 (개발 환경)
+      - name: Start Mock API Server
+        if: env.EUREKA_API_URL == 'mock'
+        run: |
+          npm run mock-api:start &
+          sleep 5
+
+      # 6. 문서 페치 및 MDX 생성
+      - name: Fetch and Generate MDX
+        id: generate
+        run: |
+          npm run fetch:documents
+          npm run generate:mdx
+          echo "changed_count=$(cat .build-cache/changed_count.txt)" >> $GITHUB_OUTPUT
+
+      # 7. 생성된 파일 아티팩트 저장
+      - name: Upload MDX artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: mdx-content
+          path: content/docs
+          retention-days: 7
+
+  build-site:
+    name: Build Fumadocs Site
+    needs: fetch-and-generate
+    if: needs.fetch-and-generate.outputs.changed_count > 0
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 체크아웃
+      - uses: actions/checkout@v4
+
+      # 2. Node.js 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
+
+      # 3. 의존성 설치
+      - name: Install dependencies
+        run: npm ci
+
+      # 4. MDX 아티팩트 다운로드
+      - name: Download MDX artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: mdx-content
+          path: content/docs
+
+      # 5. Fumadocs 빌드
+      - name: Build Fumadocs
+        run: |
+          npm run build
+          npm run export
+        env:
+          BASE_PATH: /docs
+
+      # 6. 빌드 결과 아티팩트 저장
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: site-build
+          path: out
+          retention-days: 7
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build-site
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+
+    steps:
+      # 1. 빌드 아티팩트 다운로드
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: site-build
+          path: out
+
+      # 2. GitHub Pages 설정
+      - name: Setup Pages
+        uses: actions/configure-pages@v3
+
+      # 3. 아티팩트 업로드
+      - name: Upload to Pages
+        uses: actions/upload-pages-artifact@v2
+        with:
+          path: out
+
+      # 4. 배포
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v2
+
+      # 5. 배포 완료 알림
+      - name: Notify deployment
+        if: always()
+        run: |
+          echo "Deployment status: ${{ steps.deployment.outcome }}"
+          echo "Site URL: https://${{ github.repository_owner }}.github.io/docs"
+```
+
+## 4. MDX 생성 프로세스 상세
+
+### 4.1 전체 프로세스 플로우
+
+```
+1. API에서 문서 목록 페치
+2. 부모-자식 관계 분석
+3. 카테고리/서브카테고리 구조 파악
+4. 폴더 구조 생성
+5. MDX 파일 생성
+6. meta.json 파일 생성
+7. 검색 인덱스 생성
+```
+
+### 4.2 폴더 구조 생성 규칙
+
+```typescript
+interface FolderStructureRules {
+  // 기본 경로 패턴
+  defaultPattern: "content/docs/{category}/{subCategory}/{slug}.mdx"
+
+  // 부모-자식 관계 처리
+  parentChildPattern: "content/docs/{category}/{subCategory}/{parentSlug}/{childSlug}.mdx"
+
+  // 특수 케이스
+  uncategorized: "content/docs/uncategorized/{slug}.mdx"
+
+  // 인덱스 파일
+  parentIndex: "{parentFolder}/index.mdx"
+}
+```
+
+### 4.3 MDX 생성 상세 스펙
+
+#### 4.3.1 Frontmatter 생성 규칙
+
+```yaml
+---
+# 필수 필드
+title: string # 없으면 "Untitled Document #{no}"
+description: string # readme 첫 150자 또는 자동 생성
+
+# 메타데이터
+id: string # 원본 문서 ID
+no: number # 원본 문서 번호
+order: number # 정렬 순서 (no 기반)
+
+# 분류
+category: string | null
+subCategory: string | null
+tags: string[] # keywords 필드에서 변환
+
+# 날짜
+created: ISO 8601 string
+updated: ISO 8601 string
+published: ISO 8601 string | null
+
+# 특수 플래그
+featured: boolean # markCount > 0
+draft: boolean # publishedAt이 null
+hasChildren: boolean # 자식 문서 존재 여부
+
+# 통계
+elementCount: number # noOfElement
+childCount: number # 자식 문서 개수
+
+# SEO
+slug: string # URL 경로
+canonical: string # 정규 URL
+---
+```
+
+### 4.4 Meta.json 생성 규칙
+
+#### 4.4.1 루트 레벨 meta.json (Example)
+
+```json
+{
+  "title": "Documentation",
+  "root": true,
+  "routes": [
+    {
+      "title": "AWS",
+      "path": "aws",
+      "icon": "Cloud",
+      "badge": "15 docs"
+    },
+    {
+      "title": "Development",
+      "path": "development",
+      "icon": "Code",
+      "badge": "22 docs"
+    }
+  ]
+}
+```
+
+#### 4.4.2 카테고리 레벨 meta.json (Example)
+
+```json
+{
+  "title": "AWS Services",
+  "description": "AWS 관련 문서 모음",
+  "defaultOpen": true,
+  "routes": [
+    {
+      "title": "Compute",
+      "path": "compute",
+      "pages": ["ec2-concepts", "ec2-ssh-methods"]
+    },
+    {
+      "title": "Networking",
+      "path": "networking",
+      "pages": ["elb-guide", "eip-concepts"]
+    }
+  ]
+}
+```
+
+#### 4.4.3 부모 문서 폴더의 meta.json (Example)
+
+```json
+{
+  "title": "Amazon Q Developer",
+  "description": "AI 개발 도구 가이드",
+  "index": true,
+  "pages": [
+    {
+      "name": "index",
+      "title": "Overview"
+    },
+    {
+      "name": "cli-install-linux",
+      "title": "CLI 설치 가이드 on Linux",
+      "order": 309
+    },
+    {
+      "name": "mcp-setup-guide",
+      "title": "MCP 설정 가이드",
+      "order": 310
+    },
+    {
+      "name": "q-with-mcp",
+      "title": "Q with MCP",
+      "order": 311
+    }
+  ]
+}
+```
+
+## 5. 빌드 캐시 및 증분 빌드
+
+### 5.1 캐시 구조
+
+### 5.2 증분 빌드
