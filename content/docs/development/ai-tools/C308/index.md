@@ -1,6 +1,6 @@
 ---
 title: "Amazon Q Developer"
-description: "Document 308"
+description: ""
 id: "C308"
 no: 308
 order: 308

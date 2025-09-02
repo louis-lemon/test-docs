@@ -3,6 +3,7 @@ export interface EurekaDocument {
   id: string;
   no: number;
   title?: string;
+  description?: string; // 문서 설명
   readme: string; // 실제 마크다운 콘텐츠
   category?: string;
   subCategory?: string;
