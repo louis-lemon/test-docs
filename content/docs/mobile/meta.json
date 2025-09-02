@@ -1,0 +1,24 @@
+{
+  "title": "Mobile",
+  "description": "Mobile 관련 문서 모음",
+  "defaultOpen": true,
+  "routes": [
+    {
+      "title": "App Store",
+      "path": "app-store",
+      "pages": [
+        "C249",
+        "C267",
+        "C269"
+      ]
+    },
+    {
+      "title": "Play Store",
+      "path": "play-store",
+      "pages": [
+        "C247",
+        "C268"
+      ]
+    }
+  ]
+}

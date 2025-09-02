@@ -1,0 +1,198 @@
+name: Build and Deploy Documentation
+
+on:
+  # 수동 트리거
+  workflow_dispatch:
+    inputs:
+      rebuild_all:
+        description: 'Rebuild all documents'
+        required: false
+        default: false
+        type: boolean
+
+  # 정기 동기화
+  schedule:
+    - cron: '0 */6 * * *'  # 6시간마다
+
+  # 메인 브랜치 푸시 시
+  push:
+    branches:
+      - main
+      - master
+
+  # Webhook 트리거 (future)
+  repository_dispatch:
+    types: [publish_docs]
+
+env:
+  NODE_VERSION: '20'
+  EUREKA_API_URL: ${{ secrets.EUREKA_API_URL || 'mock' }}
+
+jobs:
+  fetch-and-generate:
+    name: Fetch Content and Generate MDX
+    runs-on: ubuntu-latest
+    outputs:
+      changed_count: ${{ steps.generate.outputs.changed_count }}
+
+    steps:
+      # 1. 체크아웃
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      # 2. Node.js 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # 3. Yarn 캐시 설정
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      # 4. 의존성 설치
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # 5. 캐시 복원
+      - name: Restore build cache
+        uses: actions/cache@v3
+        with:
+          path: |
+            .build-cache
+            content/docs
+          key: docs-cache-${{ github.sha }}
+          restore-keys: |
+            docs-cache-
+
+      # 6. 문서 페치 및 MDX 생성
+      - name: Fetch and Generate MDX
+        id: generate
+        run: |
+          yarn generate
+          # Count generated files
+          if [ -d "content/docs" ]; then
+            file_count=$(find content/docs -name "*.mdx" | wc -l)
+            echo "changed_count=$file_count" >> $GITHUB_OUTPUT
+            echo "Generated $file_count MDX files"
+          else
+            echo "changed_count=0" >> $GITHUB_OUTPUT
+          fi
+
+      # 7. 생성된 파일 아티팩트 저장
+      - name: Upload MDX artifacts
+        if: steps.generate.outputs.changed_count != '0'
+        uses: actions/upload-artifact@v3
+        with:
+          name: mdx-content
+          path: content/docs
+          retention-days: 7
+
+  build-site:
+    name: Build Fumadocs Site
+    needs: fetch-and-generate
+    if: needs.fetch-and-generate.outputs.changed_count != '0'
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. 체크아웃
+      - uses: actions/checkout@v4
+
+      # 2. Node.js 설정
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+
+      # 3. Yarn 캐시 설정
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "dir=$(yarn cache dir)" >> $GITHUB_OUTPUT
+
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      # 4. 의존성 설치
+      - name: Install dependencies
+        run: yarn install --frozen-lockfile
+
+      # 5. MDX 아티팩트 다운로드
+      - name: Download MDX artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: mdx-content
+          path: content/docs
+
+      # 6. Fumadocs MDX 처리
+      - name: Process MDX files
+        run: yarn postinstall
+
+      # 7. Fumadocs 빌드
+      - name: Build Fumadocs
+        run: yarn build
+        env:
+          BASE_PATH: /test-docs
+
+      # 8. 빌드 결과 아티팩트 저장
+      - name: Upload build artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: site-build
+          path: out
+          retention-days: 7
+
+  deploy:
+    name: Deploy to GitHub Pages
+    needs: build-site
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+      contents: write
+
+    steps:
+      # 1. 체크아웃
+      - uses: actions/checkout@v4
+
+      # 2. 빌드 아티팩트 다운로드
+      - name: Download build artifacts
+        uses: actions/download-artifact@v3
+        with:
+          name: site-build
+          path: out
+
+      # 3. Deploy to GitHub Pages
+      - name: Deploy to GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./out
+          publish_branch: gh-pages
+          force_orphan: true
+          user_name: 'github-actions[bot]'
+          user_email: 'github-actions[bot]@users.noreply.github.com'
+
+      # 4. 배포 완료 알림
+      - name: Deployment summary
+        run: |
+          echo "## 🚀 Deployment Complete!" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "- **Status**: Success ✅" >> $GITHUB_STEP_SUMMARY
+          echo "- **Site URL**: https://${{ github.repository_owner }}.github.io/test-docs" >> $GITHUB_STEP_SUMMARY
+          echo "- **Branch**: gh-pages" >> $GITHUB_STEP_SUMMARY
+          echo "- **Time**: $(date)" >> $GITHUB_STEP_SUMMARY

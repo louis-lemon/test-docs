@@ -1,0 +1,14 @@
+{
+  "title": "Marketing",
+  "description": "Marketing 관련 문서 모음",
+  "defaultOpen": true,
+  "routes": [
+    {
+      "title": "Analytics",
+      "path": "analytics",
+      "pages": [
+        "C135"
+      ]
+    }
+  ]
+}

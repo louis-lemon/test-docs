@@ -1,0 +1,26 @@
+{
+  "title": "Productivity",
+  "description": "Productivity 관련 문서 모음",
+  "defaultOpen": true,
+  "routes": [
+    {
+      "title": "Documentation",
+      "path": "documentation",
+      "pages": []
+    },
+    {
+      "title": "Automation",
+      "path": "automation",
+      "pages": [
+        "C183"
+      ]
+    },
+    {
+      "title": "Spreadsheet",
+      "path": "spreadsheet",
+      "pages": [
+        "C146"
+      ]
+    }
+  ]
+}

@@ -20,11 +20,27 @@ export function baseOptions(): BaseLayoutProps {
           >
             <circle cx={12} cy={12} r={12} fill="currentColor" />
           </svg>
-          My App
+          EurekaBox Docs
         </>
       ),
     },
     // see https://fumadocs.dev/docs/ui/navigation/links
-    links: [],
+    links: [
+      {
+        text: 'Home',
+        url: '/',
+        active: 'nested-url',
+      },
+      {
+        text: 'Documentation',
+        url: '/docs',
+        active: 'nested-url',
+      },
+      {
+        text: 'GitHub',
+        url: 'https://github.com',
+        external: true,
+      },
+    ],
   };
 }

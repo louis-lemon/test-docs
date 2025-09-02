@@ -1,0 +1,66 @@
+{
+  "title": "Development",
+  "description": "Development 관련 문서 모음",
+  "defaultOpen": true,
+  "routes": [
+    {
+      "title": "AI Tools",
+      "path": "ai-tools",
+      "pages": [
+        "C308"
+      ]
+    },
+    {
+      "title": "Setup Guide",
+      "path": "setup-guide",
+      "pages": []
+    },
+    {
+      "title": "Cli",
+      "path": "cli",
+      "pages": []
+    },
+    {
+      "title": "Project Management",
+      "path": "project-management",
+      "pages": [
+        "C307"
+      ]
+    },
+    {
+      "title": "Tools",
+      "path": "tools",
+      "pages": [
+        "C296"
+      ]
+    },
+    {
+      "title": "Ai Agent",
+      "path": "ai-agent",
+      "pages": [
+        "C278"
+      ]
+    },
+    {
+      "title": "Ai Chatbot",
+      "path": "ai-chatbot",
+      "pages": []
+    },
+    {
+      "title": "Testing",
+      "path": "testing",
+      "pages": [
+        "C248"
+      ]
+    },
+    {
+      "title": "API",
+      "path": "api",
+      "pages": [
+        "C155",
+        "C156",
+        "C157"
+      ]
+    }
+  ]
+}

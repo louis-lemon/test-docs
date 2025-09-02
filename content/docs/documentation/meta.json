@@ -1,0 +1,19 @@
+{
+  "title": "Documentation",
+  "description": "Documentation 관련 문서 모음",
+  "defaultOpen": true,
+  "routes": [
+    {
+      "title": "Guide",
+      "path": "guide",
+      "pages": [
+        "C258"
+      ]
+    },
+    {
+      "title": "Markup",
+      "path": "markup",
+      "pages": []
+    }
+  ]
+}

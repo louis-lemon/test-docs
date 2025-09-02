@@ -1,0 +1,21 @@
+{
+  "title": "AI",
+  "description": "AI 관련 문서 모음",
+  "defaultOpen": true,
+  "routes": [
+    {
+      "title": "Machine Learning",
+      "path": "machine-learning",
+      "pages": [
+        "C138"
+      ]
+    },
+    {
+      "title": "Glossary",
+      "path": "glossary",
+      "pages": [
+        "C136"
+      ]
+    }
+  ]
+}

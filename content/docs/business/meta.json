@@ -1,0 +1,21 @@
+{
+  "title": "Business",
+  "description": "Business 관련 문서 모음",
+  "defaultOpen": true,
+  "routes": [
+    {
+      "title": "Payment",
+      "path": "payment",
+      "pages": [
+        "C270"
+      ]
+    },
+    {
+      "title": "Billing",
+      "path": "billing",
+      "pages": [
+        "C143"
+      ]
+    }
+  ]
+}
