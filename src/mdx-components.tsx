@@ -1,14 +1,15 @@
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
 import Image from 'next/image';
+import { getImagePath } from '@/lib/image-utils';
 
 // Custom image component that handles dynamic dimensions
 const CustomImage = ({ src, alt, ...props }: any) => {
-  // For local images in /images/, use unoptimized mode with intrinsic sizing
+  // For local images in /images/, use basePath-aware path
   if (src?.startsWith('/images/')) {
     return (
       <img
-        src={src}
+        src={getImagePath(src)}
         alt={alt}
         className="max-w-full h-auto rounded-lg border"
         style={{ display: 'block' }}
