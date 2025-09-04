@@ -1,0 +1,28 @@
+{
+  "pages": [
+    {
+      "name": "ai-tools",
+      "title": "ai-tools"
+    },
+    {
+      "name": "project-management",
+      "title": "project-management"
+    },
+    {
+      "name": "tools",
+      "title": "tools"
+    },
+    {
+      "name": "ai-agent",
+      "title": "ai-agent"
+    },
+    {
+      "name": "testing",
+      "title": "testing"
+    },
+    {
+      "name": "api",
+      "title": "api"
+    }
+  ]
+}

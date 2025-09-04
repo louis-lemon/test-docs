@@ -1,0 +1,12 @@
+{
+  "pages": [
+    {
+      "name": "C291",
+      "title": "[AWS] 📚 EIP(탄력적 IP) 개념 & 사용 세팅 정리"
+    },
+    {
+      "name": "C298",
+      "title": "ELB(Elastic Load Balancer) 구성 & 사용법 가이드"
+    }
+  ]
+}

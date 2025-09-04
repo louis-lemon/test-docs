@@ -1,0 +1,36 @@
+{
+  "pages": [
+    {
+      "name": "C175",
+      "title": "유저 프롬프트를 활용하지 못한 경우(Chatgpt)"
+    },
+    {
+      "name": "C179",
+      "title": "유저 프롬프트 가이드"
+    },
+    {
+      "name": "C181",
+      "title": "유저 프롬프트 적용하여 블로그 작성(Chatgpt)"
+    },
+    {
+      "name": "C182",
+      "title": "유저 프롬프트 적용하여 블로그 작성(perplexity)"
+    },
+    {
+      "name": "C184",
+      "title": "마크다운(Markdown) 문법"
+    },
+    {
+      "name": "C186",
+      "title": "Agent 가 무엇인지?"
+    },
+    {
+      "name": "C188",
+      "title": "DeveOps 가 무엇인지?"
+    },
+    {
+      "name": "C239",
+      "title": "유레카 코즈로 블로그 작성 에이전트 만들기"
+    }
+  ]
+}

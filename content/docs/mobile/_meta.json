@@ -1,0 +1,12 @@
+{
+  "pages": [
+    {
+      "name": "app-store",
+      "title": "app-store"
+    },
+    {
+      "name": "play-store",
+      "title": "play-store"
+    }
+  ]
+}

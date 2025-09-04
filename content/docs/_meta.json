@@ -1,0 +1,52 @@
+{
+  "pages": [
+    {
+      "name": "uncategorized",
+      "title": "uncategorized"
+    },
+    {
+      "name": "development",
+      "title": "development"
+    },
+    {
+      "name": "web-development",
+      "title": "web-development"
+    },
+    {
+      "name": "aws",
+      "title": "aws"
+    },
+    {
+      "name": "business",
+      "title": "business"
+    },
+    {
+      "name": "mobile",
+      "title": "mobile"
+    },
+    {
+      "name": "documentation",
+      "title": "documentation"
+    },
+    {
+      "name": "productivity",
+      "title": "productivity"
+    },
+    {
+      "name": "content",
+      "title": "content"
+    },
+    {
+      "name": "design",
+      "title": "design"
+    },
+    {
+      "name": "ai",
+      "title": "ai"
+    },
+    {
+      "name": "marketing",
+      "title": "marketing"
+    }
+  ]
+}

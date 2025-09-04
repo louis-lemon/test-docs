@@ -1,0 +1,12 @@
+{
+  "pages": [
+    {
+      "name": "payment",
+      "title": "payment"
+    },
+    {
+      "name": "billing",
+      "title": "billing"
+    }
+  ]
+}

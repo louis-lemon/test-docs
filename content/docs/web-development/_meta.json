@@ -1,0 +1,12 @@
+{
+  "pages": [
+    {
+      "name": "websocket",
+      "title": "websocket"
+    },
+    {
+      "name": "frontend",
+      "title": "frontend"
+    }
+  ]
+}

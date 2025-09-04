@@ -1,0 +1,44 @@
+{
+  "pages": [
+    {
+      "name": "networking",
+      "title": "networking"
+    },
+    {
+      "name": "storage",
+      "title": "storage"
+    },
+    {
+      "name": "compute",
+      "title": "compute"
+    },
+    {
+      "name": "scaling",
+      "title": "scaling"
+    },
+    {
+      "name": "concepts",
+      "title": "concepts"
+    },
+    {
+      "name": "overview",
+      "title": "overview"
+    },
+    {
+      "name": "billing",
+      "title": "billing"
+    },
+    {
+      "name": "domain",
+      "title": "domain"
+    },
+    {
+      "name": "security",
+      "title": "security"
+    },
+    {
+      "name": "management",
+      "title": "management"
+    }
+  ]
+}
