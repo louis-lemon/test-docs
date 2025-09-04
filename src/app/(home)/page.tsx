@@ -28,10 +28,10 @@ function SearchButton() {
       onClick={handleSearchClick}
       className="w-full max-w-lg mx-auto flex items-center gap-3 p-4 bg-fd-card/80 backdrop-blur border border-fd-border rounded-xl shadow-lg hover:shadow-xl hover:border-fd-primary/50 transition-all duration-300 group cursor-pointer"
     >
-      <svg 
-        className="h-5 w-5 text-fd-muted-foreground group-hover:text-fd-primary transition-colors" 
-        fill="none" 
-        viewBox="0 0 24 24" 
+      <svg
+        className="h-5 w-5 text-fd-muted-foreground group-hover:text-fd-primary transition-colors"
+        fill="none"
+        viewBox="0 0 24 24"
         stroke="currentColor"
       >
         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
@@ -90,24 +90,24 @@ export default function HomePage() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero Section */}
-      <section className="relative min-h-[70vh] flex items-center justify-center overflow-hidden">
-        {/* Background gradient with subtle pattern - theme-aware */}
+      <section className="relative min-h-[400px] sm:min-h-[384px] flex items-center justify-center overflow-hidden">
+        {/* Background gradient */}
         <div className="absolute inset-0 bg-gradient-to-br from-fd-primary/5 via-fd-background to-fd-accent/10" />
-        <div className="absolute inset-0 opacity-20 dark:opacity-30">
+        <div className="absolute inset-0 opacity-30">
           <div className="absolute inset-0 bg-[radial-gradient(circle_at_1px_1px,rgba(var(--fd-foreground),0.1)_1px,transparent_0)] bg-[length:24px_24px]" />
         </div>
 
         {/* Hero Content */}
-        <div className="relative z-10 text-center max-w-4xl mx-auto px-6">
-          <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-fd-foreground to-fd-muted-foreground bg-clip-text text-transparent">
+        <div className="relative z-10 text-center max-w-4xl mx-auto px-6 py-8">
+          <h1 className="text-4xl md:text-5xl font-bold mb-4 bg-gradient-to-r from-fd-foreground to-fd-muted-foreground bg-clip-text text-transparent">
             Welcome to EurekaBox
           </h1>
-          <p className="text-xl md:text-2xl text-fd-muted-foreground mb-12 max-w-3xl mx-auto leading-relaxed">
+          <p className="text-lg md:text-xl text-fd-muted-foreground mb-8 max-w-2xl mx-auto leading-relaxed">
             Learn more about EurekaBox to transform how you build and document software systems
           </p>
 
           {/* Search Bar */}
-          <div className="max-w-2xl mx-auto mb-16">
+          <div className="max-w-2xl mx-auto mb-4">
             <SearchButton />
           </div>
         </div>
