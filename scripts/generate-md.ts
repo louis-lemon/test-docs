@@ -471,10 +471,24 @@ async function generateMarkdown(): Promise<void> {
   }
 
   // 컨텐츠 디렉토리 정리 또는 생성
+  // docs/index.md 파일 백업
+  const indexMdPath = path.join(CONTENT_DIR, 'index.md');
+  let indexMdContent: string | null = null;
+  if (fs.existsSync(indexMdPath)) {
+    indexMdContent = fs.readFileSync(indexMdPath, 'utf-8');
+    console.log('📝 Backing up docs/index.md');
+  }
+
   if (fs.existsSync(CONTENT_DIR)) {
     fs.rmSync(CONTENT_DIR, { recursive: true, force: true });
   }
   fs.mkdirSync(CONTENT_DIR, { recursive: true });
+
+  // docs/index.md 파일 복원
+  if (indexMdContent) {
+    fs.writeFileSync(indexMdPath, indexMdContent, 'utf-8');
+    console.log('✅ Restored docs/index.md');
+  }
 
   // 캐시 로드
   const cache = await loadOrCreateCache();
