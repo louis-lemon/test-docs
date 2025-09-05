@@ -93,14 +93,16 @@ export function MyHeader({
                 {nav.title}
             </Link>
             {nav.children}
-            <div className="flex flex-row items-center justify-end gap-1.5 flex-1 max-lg:hidden py-3">
+            <div className="flex-1 flex justify-center max-lg:hidden py-3">
                 {searchToggle.enabled !== false &&
                     (searchToggle.components?.lg ?? (
                         <LargeSearchToggle
-                            className="w-full rounded-full ps-2.5 max-w-[240px]"
+                            className="w-full rounded-full ps-2.5 max-w-[350px]"
                             hideIfDisabled
                         />
                     ))}
+            </div>
+            <div className="flex flex-row items-center gap-1.5 max-lg:hidden py-3">
                 {themeSwitch.enabled !== false &&
                     (themeSwitch.component ?? <ThemeToggle mode={themeSwitch?.mode} />)}
                 {i18n ? (
