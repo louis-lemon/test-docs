@@ -62,18 +62,18 @@ export default function ShaderBackground({ children }: ShaderBackgroundProps) {
             <MeshGradient
                 className="absolute inset-0 w-full h-full transition-all duration-1000 group-hover:scale-105"
                 colors={["#000000", "#0a0a0a", "#ffffff", "#141414", "#000000"]}
-                speed={1.5}
+                speed={0.4}
             />
             <MeshGradient
                 className="absolute inset-0 w-full h-full opacity-25 mix-blend-screen transition-opacity duration-700 group-hover:opacity-40"
                 colors={["#ffffff", "#e8e8e8", "#000000", "#f5f5f5"]}
-                speed={2.0}
+                speed={0.5}
                 wireframe="true"
             />
             <MeshGradient
                 className="absolute inset-0 w-full h-full opacity-15 mix-blend-overlay"
                 colors={["#000000", "#707070", "#ffffff"]}
-                speed={0.8}
+                speed={0.3}
             />
             
             {/* Subtle gradient overlay for depth */}
