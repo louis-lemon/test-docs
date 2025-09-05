@@ -2,6 +2,17 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
+import { 
+  Globe, 
+  Cloud, 
+  Wrench, 
+  BookOpen, 
+  Bot, 
+  Zap, 
+  Lightbulb, 
+  Search, 
+  Compass 
+} from 'lucide-react';
 
 // Search button component that integrates with Fumadocs search
 function SearchButton() {
@@ -46,7 +57,7 @@ function QuickStartCard({ title, description, href, icon }: {
   title: string;
   description: string;
   href: string;
-  icon: string;
+  icon: React.ReactNode;
 }) {
   return (
     <Link
@@ -60,7 +71,7 @@ function QuickStartCard({ title, description, href, icon }: {
             <path d="M7 17 17 7"></path>
           </svg>
         </div>
-        <div className="h-6 w-6 mb-4 flex items-center justify-center text-2xl">
+        <div className="h-6 w-6 mb-4 text-gray-700 dark:text-gray-300">
           {icon}
         </div>
         <div>
@@ -80,7 +91,7 @@ function TopicCard({ title, description, href, icon }: {
   title: string;
   description: string;
   href: string;
-  icon: string;
+  icon: React.ReactNode;
 }) {
   return (
     <Link
@@ -94,7 +105,7 @@ function TopicCard({ title, description, href, icon }: {
             <path d="M7 17 17 7"></path>
           </svg>
         </div>
-        <div className="h-6 w-6 mb-4 flex items-center justify-center text-2xl">
+        <div className="h-6 w-6 mb-4 text-gray-700 dark:text-gray-300">
           {icon}
         </div>
         <div>
@@ -157,19 +168,19 @@ export default function HomePage() {
               title="Web Interface"
               description="Get up and running with EurekaBox's web documentation interface in 5 minutes"
               href="/docs"
-              icon="🌐"
+              icon={<Globe className="w-6 h-6" />}
             />
             <QuickStartCard
               title="AWS Integration"
               description="Learn how to integrate EurekaBox with AWS services and infrastructure"
               href="/docs/aws"
-              icon="☁️"
+              icon={<Cloud className="w-6 h-6" />}
             />
             <QuickStartCard
               title="Development Guide"
               description="Start developing with EurekaBox using our comprehensive development documentation"
               href="/docs/development"
-              icon="🛠️"
+              icon={<Wrench className="w-6 h-6" />}
             />
           </div>
         </div>
@@ -184,37 +195,37 @@ export default function HomePage() {
             title="Managing Context"
             description="Learn how to bring together and manage context from across your documentation system"
             href="/docs"
-            icon="📚"
+            icon={<BookOpen className="w-6 h-6" />}
           />
           <TopicCard
             title="EurekaBox CMS"
             description="Specialized content management system designed for technical documentation"
             href="/docs"
-            icon="🤖"
+            icon={<Bot className="w-6 h-6" />}
           />
           <TopicCard
             title="GitHub Integration"
             description="Master EurekaBox's seamless integration with GitHub Actions and workflows"
             href="/docs"
-            icon="⚡"
+            icon={<Zap className="w-6 h-6" />}
           />
           <TopicCard
             title="Use Cases"
             description="Explore real-world applications and examples of EurekaBox implementations"
             href="/docs"
-            icon="💡"
+            icon={<Lightbulb className="w-6 h-6" />}
           />
           <TopicCard
             title="Static Site Generation"
             description="Allow EurekaBox to automatically generate static documentation sites"
             href="/docs"
-            icon="🔍"
+            icon={<Search className="w-6 h-6" />}
           />
           <TopicCard
             title="Deployment Guide"
             description="Leverage GitHub Pages and automated deployment for your documentation"
             href="/docs"
-            icon="🧭"
+            icon={<Compass className="w-6 h-6" />}
           />
         </div>
       </section>
