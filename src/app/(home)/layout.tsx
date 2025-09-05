@@ -163,7 +163,7 @@ export function MyHeader({
                 </Menu>
             </ul>
         </Navbar>
-        <Navbar id="second-nav" className="!h-10 max-sm:hidden !top-[calc(var(--fd-banner-height)+3.5rem)] [&_nav]:!h-10">
+        <Navbar id="second-nav" className="!h-10 max-sm:hidden !top-[calc(var(--fd-banner-height)+3.5rem)] [&_nav]:!h-10 !border-t-0 backdrop-blur-sm">
             <ul className="flex flex-row items-center gap-2">
                 {navItems
                     .filter((item) => !isSecondary(item))
