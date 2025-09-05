@@ -1,7 +1,4 @@
-'use client';
-
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 import {
   Globe,
   Cloud,
@@ -14,113 +11,8 @@ import {
   Compass
 } from 'lucide-react';
 import ShaderBackground from "@/components/shader-background";
-
-// Search button component that integrates with Fumadocs search
-function SearchButton() {
-  const [isMac, setIsMac] = useState(false);
-
-  useEffect(() => {
-    setIsMac(typeof window !== 'undefined' && navigator.platform.toUpperCase().indexOf('MAC') >= 0);
-  }, []);
-
-  const handleSearchClick = () => {
-    // Trigger the same keyboard shortcut that Fumadocs uses
-    const event = new KeyboardEvent('keydown', {
-      key: 'k',
-      code: 'KeyK',
-      metaKey: isMac,
-      ctrlKey: !isMac,
-      bubbles: true
-    });
-    document.dispatchEvent(event);
-  };
-
-  return (
-    <button
-      onClick={handleSearchClick}
-      className="flex w-full max-w-2xl items-center text-sm leading-6 rounded-lg py-1.5 pl-2.5 pr-3 shadow-sm text-gray-400 dark:text-white/50 bg-fd-background dark:bg-fd-background hover:ring-gray-600/25 dark:hover:ring-gray-500/30 ring-1 ring-gray-400/20 dark:ring-gray-600/30 transition-all cursor-pointer"
-    >
-      <svg
-        className="h-4 w-4 ml-1.5 mr-3 flex-none bg-gray-500 hover:bg-gray-600 dark:bg-white/50 dark:hover:bg-white/70"
-        style={{
-          maskImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke-width=\'1.5\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' d=\'M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z\' /%3E%3C/svg%3E")',
-          maskRepeat: 'no-repeat',
-          maskPosition: 'center'
-        }}
-      />
-      <span>Search or ask anything</span>
-    </button>
-  );
-}
-
-// Card components for quick start and topics
-function QuickStartCard({ title, description, href, icon }: {
-  title: string;
-  description: string;
-  href: string;
-  icon: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      className="card block font-normal group relative my-2 rounded-2xl bg-white dark:bg-fd-card border border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 overflow-hidden w-full cursor-pointer transition-all"
-    >
-      <div className="px-6 py-5 relative">
-        <div className="absolute text-gray-400 dark:text-gray-500 group-hover:text-primary dark:group-hover:text-primary-light top-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-            <path d="M7 7h10v10"></path>
-            <path d="M7 17 17 7"></path>
-          </svg>
-        </div>
-        <div className="h-6 w-6 mb-4 text-gray-700 dark:text-gray-300">
-          {icon}
-        </div>
-        <div>
-          <h2 className="not-prose font-semibold text-base text-gray-800 dark:text-white mt-4">
-            {title}
-          </h2>
-          <div className="mt-1 font-normal text-sm leading-6 text-gray-600 dark:text-gray-400">
-            <span>{description}</span>
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-}
-
-function TopicCard({ title, description, href, icon }: {
-  title: string;
-  description: string;
-  href: string;
-  icon: React.ReactNode;
-}) {
-  return (
-    <Link
-      href={href}
-      className="card block font-normal group relative my-2 rounded-2xl bg-white dark:bg-fd-card border border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 overflow-hidden w-full cursor-pointer transition-all"
-    >
-      <div className="px-6 py-5 relative">
-        <div className="absolute text-gray-400 dark:text-gray-500 group-hover:text-primary dark:group-hover:text-primary-light top-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity">
-          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
-            <path d="M7 7h10v10"></path>
-            <path d="M7 17 17 7"></path>
-          </svg>
-        </div>
-        <div className="h-6 w-6 mb-4 text-gray-700 dark:text-gray-300">
-          {icon}
-        </div>
-        <div>
-          <h2 className="not-prose font-semibold text-base text-gray-800 dark:text-white mt-4">
-            {title}
-          </h2>
-          <div className="mt-1 font-normal text-sm leading-6 text-gray-600 dark:text-gray-400">
-            <span>{description}</span>
-          </div>
-        </div>
-      </div>
-    </Link>
-  );
-}
+import { SearchButton } from "@/components/search-button";
+import { QuickStartCard, TopicCard } from "@/components/card";
 
 export default function HomePage() {
   return (
@@ -133,7 +25,7 @@ export default function HomePage() {
             <div className="text-center">
               {/* Main heading with white text */}
               <h1 className="text-white font-semibold" style={{ fontSize: '28px', margin: 0 }}>
-                Welcome to <span className="text-blue-400">EurekaBox</span>
+                Welcome to <span className="text-orange-400">LemonCloud</span>
               </h1>
               <p className="text-white font-normal mt-4 max-w-2xl mx-auto" style={{ fontSize: '16px' }}>
                 Transform how you build and document software systems with intelligent automation
