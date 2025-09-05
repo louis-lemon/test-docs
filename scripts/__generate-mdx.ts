@@ -431,7 +431,7 @@ function getCategoryIcon(category: string): string {
 }
 
 // 메인 실행 함수
-async function generateMDX() {
+async function __generateMdx() {
   console.log('🚀 Starting MDX generation...\n');
 
   // 캐시 디렉토리 생성
@@ -603,4 +603,4 @@ async function generateMDX() {
 }
 
 // 실행
-generateMDX().catch(console.error);
+__generateMdx().catch(console.error);

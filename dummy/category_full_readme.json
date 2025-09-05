@@ -8,7 +8,8 @@
       "updatedAt": 1756725084425,
       "deletedAt": 0,
       "no": 312,
-      "readme": "NOTE: some markdown string"
+      "readme": "NOTE: some markdown string",
+      "locales": ["ko", "en"]
     },
     {
       "id": "C311",
@@ -30,7 +31,8 @@
         "Amazon Q",
         "developer tools",
         "AI assistant"
-      ]
+      ],
+      "locales": ["en"]
     },
     {
       "id": "C310",
@@ -53,7 +55,8 @@
         "가이드",
         "configuration",
         "setup"
-      ]
+      ],
+      "locales": ["ko"]
     },
     {
       "id": "C309",
@@ -76,7 +79,8 @@
         "설치",
         "installation",
         "command line"
-      ]
+      ],
+      "locales": ["ko", "en"]
     },
     {
       "id": "C308",
