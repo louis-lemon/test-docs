@@ -64,7 +64,7 @@ function CustomHomeLayout(
     );
 }
 
-export function MyHeader({
+function MyHeader({
                            nav = {},
                            i18n = false,
                            links,
@@ -223,9 +223,15 @@ function NavbarLinkItem({
             <NavbarMenu>
                 <NavbarMenuTrigger {...props}>
                     {item.url ? (
-                        <Link href={item.url} external={item.external}>
-                            {item.text}
-                        </Link>
+                        ('external' in item && item.external) ? (
+                            <a href={item.url} target="_blank" rel="noopener noreferrer">
+                                {item.text}
+                            </a>
+                        ) : (
+                            <Link href={item.url}>
+                                {item.text}
+                            </Link>
+                        )
                     ) : (
                         item.text
                     )}

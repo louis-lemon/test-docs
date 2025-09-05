@@ -14,7 +14,6 @@ import {
   Compass
 } from 'lucide-react';
 import ShaderBackground from "@/components/shader-background";
-import PulsingCircle from "@/components/pulsing-circle";
 
 // Search button component that integrates with Fumadocs search
 function SearchButton() {
