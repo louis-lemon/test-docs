@@ -44,7 +44,7 @@ function CustomHomeLayout(
             <main
                 id="nd-home-layout"
                 {...rest}
-                className={cn('flex flex-1 flex-col pt-14', rest.className)}
+                className={cn('flex flex-1 flex-col pt-24', rest.className)}
             >
                 {nav.enabled !== false &&
                     (nav.component ?? (
@@ -84,22 +84,16 @@ export function MyHeader({
     );
 
     return (
-        <Navbar>
+        <>
+        <Navbar className="!flex-wrap !h-auto !items-start !border-none">
             <Link
                 href={nav.url ?? '/'}
-                className="inline-flex items-center gap-2.5 font-semibold"
+                className="inline-flex items-center gap-2.5 font-semibold py-3"
             >
                 {nav.title}
             </Link>
             {nav.children}
-            <ul className="flex flex-row items-center gap-2 px-6 max-sm:hidden">
-                {navItems
-                    .filter((item) => !isSecondary(item))
-                    .map((item, i) => (
-                        <NavbarLinkItem key={i} item={item} className="text-sm" />
-                    ))}
-            </ul>
-            <div className="flex flex-row items-center justify-end gap-1.5 flex-1 max-lg:hidden">
+            <div className="flex flex-row items-center justify-end gap-1.5 flex-1 max-lg:hidden py-3">
                 {searchToggle.enabled !== false &&
                     (searchToggle.components?.lg ?? (
                         <LargeSearchToggle
@@ -166,6 +160,16 @@ export function MyHeader({
                 </Menu>
             </ul>
         </Navbar>
+        <Navbar id="second-nav" className="!h-10 max-sm:hidden !top-[calc(var(--fd-banner-height)+3.5rem)] [&_nav]:!h-10">
+            <ul className="flex flex-row items-center gap-2">
+                {navItems
+                    .filter((item) => !isSecondary(item))
+                    .map((item, i) => (
+                        <NavbarLinkItem key={i} item={item} className="text-sm" />
+                    ))}
+            </ul>
+        </Navbar>
+        </>
     );
 }
 
