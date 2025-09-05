@@ -45,7 +45,7 @@ function CustomHomeLayout(
             <main
                 id="nd-home-layout"
                 {...rest}
-                className={cn('flex flex-1 flex-col pt-24', rest.className)}
+                className={cn('flex flex-1 flex-col pt-16 sm:pt-24', rest.className)}
             >
                 {nav.enabled !== false &&
                     (nav.component ?? (
