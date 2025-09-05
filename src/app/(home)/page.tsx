@@ -26,25 +26,17 @@ function SearchButton() {
   return (
     <button
       onClick={handleSearchClick}
-      className="w-full flex items-center gap-3 p-4 bg-fd-background/95 backdrop-blur-sm border border-fd-border rounded-xl hover:bg-fd-background hover:shadow-lg transition-all duration-200 group cursor-pointer"
+      className="flex w-full max-w-2xl items-center text-sm leading-6 rounded-lg py-1.5 pl-2.5 pr-3 shadow-sm text-gray-400 dark:text-white/50 bg-fd-background dark:bg-fd-background hover:ring-gray-600/25 dark:hover:ring-gray-500/30 ring-1 ring-gray-400/20 dark:ring-gray-600/30 transition-all cursor-pointer"
     >
       <svg
-        className="h-5 w-5 text-fd-muted-foreground group-hover:text-fd-primary transition-colors"
-        fill="none"
-        viewBox="0 0 24 24"
-        stroke="currentColor"
-      >
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
-      </svg>
-      <span className="flex-1 text-left text-fd-muted-foreground group-hover:text-fd-foreground transition-colors font-medium">
-        Search documentation...
-      </span>
-      <div className="hidden sm:flex items-center gap-1 text-xs text-fd-muted-foreground">
-        <kbd className="px-2 py-1 bg-fd-muted rounded border text-xs font-mono">
-          {isMac ? '⌘' : 'Ctrl'}
-        </kbd>
-        <kbd className="px-2 py-1 bg-fd-muted rounded border text-xs font-mono">K</kbd>
-      </div>
+        className="h-4 w-4 ml-1.5 mr-3 flex-none bg-gray-500 hover:bg-gray-600 dark:bg-white/50 dark:hover:bg-white/70"
+        style={{
+          maskImage: 'url("data:image/svg+xml,%3Csvg xmlns=\'http://www.w3.org/2000/svg\' fill=\'none\' viewBox=\'0 0 24 24\' stroke-width=\'1.5\' stroke=\'currentColor\'%3E%3Cpath stroke-linecap=\'round\' stroke-linejoin=\'round\' d=\'M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z\' /%3E%3C/svg%3E")',
+          maskRepeat: 'no-repeat',
+          maskPosition: 'center'
+        }}
+      />
+      <span>Search or ask anything</span>
     </button>
   );
 }
@@ -90,7 +82,7 @@ export default function HomePage() {
   return (
     <main className="flex flex-1 flex-col">
       {/* Hero Section with Background Image */}
-      <section className="relative min-h-screen">
+      <section className="relative" style={{ height: '24rem' }}>
         {/* Background Image */}
         <div
           className="absolute inset-0 bg-cover bg-center bg-no-repeat"
@@ -100,41 +92,22 @@ export default function HomePage() {
         />
 
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-black/50" />
+        <div className="absolute inset-0 bg-black/60" />
 
         {/* Content */}
-        <div className="relative z-10 flex flex-col items-center justify-center min-h-screen px-6">
-          <div className="max-w-4xl mx-auto text-center">
+        <div className="relative z-10 flex flex-col items-center justify-center h-full px-6">
+          <div className="text-center">
             {/* Main heading with white text */}
-            <div className="space-y-6 mb-12">
-              <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight text-white">
-                Welcome to
-                <span className="block text-blue-400 mt-2">EurekaBox</span>
-              </h1>
-              <p className="text-xl md:text-2xl text-gray-200 max-w-3xl mx-auto font-light leading-relaxed">
-                Transform how you build and document software systems with intelligent automation
-              </p>
-            </div>
+            <h1 className="text-white font-semibold" style={{ fontSize: '28px', margin: 0 }}>
+              Welcome to <span className="text-blue-400">EurekaBox</span>
+            </h1>
+            <p className="text-white font-normal mt-4 max-w-2xl mx-auto" style={{ fontSize: '16px' }}>
+              Transform how you build and document software systems with intelligent automation
+            </p>
 
             {/* Floating Search Bar */}
-            <div className="max-w-xl mx-auto mb-16">
+            <div className="max-w-xl mx-auto mt-8">
                 <SearchButton />
-            </div>
-
-            {/* Feature highlights with white text */}
-            <div className="flex flex-wrap justify-center gap-8 text-sm text-gray-300">
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-blue-400"></div>
-                <span>Intelligent Documentation</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-blue-400"></div>
-                <span>GitHub Integration</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-2 h-2 rounded-full bg-blue-400"></div>
-                <span>Static Site Generation</span>
-              </div>
             </div>
           </div>
         </div>

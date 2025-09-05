@@ -22,7 +22,8 @@ import {Menu, MenuContent, MenuLinkItem, MenuTrigger} from "fumadocs-ui/layouts/
 import {buttonVariants} from "fumadocs-ui/components/ui/button";
 
 export default function Layout({ children }: LayoutProps<'/'>) {
-  return <CustomHomeLayout {...baseOptions()}>{children}</CustomHomeLayout>;
+  // return <HomeLayout {...baseOptions()}>{children}</HomeLayout>;
+    return <CustomHomeLayout {...baseOptions()}>{children}</CustomHomeLayout>;
 }
 
 function CustomHomeLayout(
@@ -97,7 +98,7 @@ export function MyHeader({
                 {searchToggle.enabled !== false &&
                     (searchToggle.components?.lg ?? (
                         <LargeSearchToggle
-                            className="w-full rounded-full ps-2.5 max-w-[350px]"
+                            className="w-full rounded-full ps-2.5 max-w-[350px] cursor-pointer"
                             hideIfDisabled
                         />
                     ))}
@@ -119,7 +120,7 @@ export function MyHeader({
             <ul className="flex flex-row items-center ms-auto -me-1.5 lg:hidden">
                 {searchToggle.enabled !== false &&
                     (searchToggle.components?.sm ?? (
-                        <SearchToggle className="p-2" hideIfDisabled />
+                        <SearchToggle className="p-2 cursor-pointer" hideIfDisabled />
                     ))}
                 <Menu>
                     <MenuTrigger
