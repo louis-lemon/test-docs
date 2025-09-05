@@ -51,11 +51,27 @@ function QuickStartCard({ title, description, href, icon }: {
   return (
     <Link
       href={href}
-      className="group p-8 bg-fd-card rounded-2xl border border-fd-border hover:border-fd-primary/50 hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1"
+      className="card block font-normal group relative my-2 rounded-2xl bg-white dark:bg-fd-card border border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 overflow-hidden w-full cursor-pointer transition-all"
     >
-      <div className="text-3xl mb-4">{icon}</div>
-      <h3 className="text-xl font-bold mb-3 text-fd-foreground group-hover:text-fd-primary transition-colors">{title}</h3>
-      <p className="text-fd-muted-foreground text-base leading-relaxed">{description}</p>
+      <div className="px-6 py-5 relative">
+        <div className="absolute text-gray-400 dark:text-gray-500 group-hover:text-primary dark:group-hover:text-primary-light top-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+            <path d="M7 7h10v10"></path>
+            <path d="M7 17 17 7"></path>
+          </svg>
+        </div>
+        <div className="h-6 w-6 mb-4 flex items-center justify-center text-2xl">
+          {icon}
+        </div>
+        <div>
+          <h2 className="not-prose font-semibold text-base text-gray-800 dark:text-white mt-4">
+            {title}
+          </h2>
+          <div className="mt-1 font-normal text-sm leading-6 text-gray-600 dark:text-gray-400">
+            <span>{description}</span>
+          </div>
+        </div>
+      </div>
     </Link>
   );
 }
@@ -69,11 +85,27 @@ function TopicCard({ title, description, href, icon }: {
   return (
     <Link
       href={href}
-      className="group p-6 bg-fd-card rounded-xl border border-fd-border hover:border-fd-primary/50 hover:shadow-lg transition-all duration-300 transform hover:-translate-y-1"
+      className="card block font-normal group relative my-2 rounded-2xl bg-white dark:bg-fd-card border border-black/10 dark:border-white/10 hover:border-black/30 dark:hover:border-white/30 overflow-hidden w-full cursor-pointer transition-all"
     >
-      <div className="text-2xl mb-4">{icon}</div>
-      <h3 className="font-bold mb-3 text-fd-foreground group-hover:text-fd-primary transition-colors">{title}</h3>
-      <p className="text-fd-muted-foreground text-sm leading-relaxed">{description}</p>
+      <div className="px-6 py-5 relative">
+        <div className="absolute text-gray-400 dark:text-gray-500 group-hover:text-primary dark:group-hover:text-primary-light top-5 right-5 opacity-0 group-hover:opacity-100 transition-opacity">
+          <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="w-4 h-4">
+            <path d="M7 7h10v10"></path>
+            <path d="M7 17 17 7"></path>
+          </svg>
+        </div>
+        <div className="h-6 w-6 mb-4 flex items-center justify-center text-2xl">
+          {icon}
+        </div>
+        <div>
+          <h2 className="not-prose font-semibold text-base text-gray-800 dark:text-white mt-4">
+            {title}
+          </h2>
+          <div className="mt-1 font-normal text-sm leading-6 text-gray-600 dark:text-gray-400">
+            <span>{description}</span>
+          </div>
+        </div>
+      </div>
     </Link>
   );
 }
@@ -114,46 +146,40 @@ export default function HomePage() {
       </section>
 
       {/* Quick Start Section */}
-      <section className="py-20 px-6 max-w-7xl mx-auto w-full">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-6 text-fd-foreground">Get started in 5 minutes</h2>
-          <p className="text-fd-muted-foreground text-xl max-w-2xl mx-auto">
-            Choose your preferred way to explore EurekaBox documentation
-          </p>
+      <section className="my-12 mx-auto max-w-6xl px-5">
+        <p className="text-gray-900 dark:text-gray-200 text-left mt-4 text-2xl mb-4 font-semibold">
+          Get started in 5 minutes
+        </p>
+
+        <div>
+          <div className="not-prose grid gap-x-4 sm:grid-cols-3">
+            <QuickStartCard
+              title="Web Interface"
+              description="Get up and running with EurekaBox's web documentation interface in 5 minutes"
+              href="/docs"
+              icon="🌐"
+            />
+            <QuickStartCard
+              title="AWS Integration"
+              description="Learn how to integrate EurekaBox with AWS services and infrastructure"
+              href="/docs/aws"
+              icon="☁️"
+            />
+            <QuickStartCard
+              title="Development Guide"
+              description="Start developing with EurekaBox using our comprehensive development documentation"
+              href="/docs/development"
+              icon="🛠️"
+            />
+          </div>
         </div>
 
-        <div className="grid md:grid-cols-3 gap-8">
-          <QuickStartCard
-            title="Web Interface"
-            description="Get up and running with EurekaBox's web documentation interface in 5 minutes"
-            href="/docs"
-            icon="🌐"
-          />
-          <QuickStartCard
-            title="AWS Integration"
-            description="Learn how to integrate EurekaBox with AWS services and infrastructure"
-            href="/docs/aws"
-            icon="☁️"
-          />
-          <QuickStartCard
-            title="Development Guide"
-            description="Start developing with EurekaBox using our comprehensive development documentation"
-            href="/docs/development"
-            icon="🛠️"
-          />
-        </div>
-      </section>
+        {/* Topics Section */}
+        <p className="text-gray-900 dark:text-gray-200 text-left mt-10 text-2xl mb-4 font-semibold">
+          Choose a topic below or <Link href="/docs" className="text-primary dark:text-primary-light">get started in 5 minutes</Link>
+        </p>
 
-      {/* Topics Section */}
-      <section className="py-20 px-6 max-w-7xl mx-auto w-full bg-fd-muted/20">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold mb-6 text-fd-foreground">Choose a topic below or get started in 5 minutes</h2>
-          <p className="text-fd-muted-foreground text-xl max-w-3xl mx-auto">
-            Explore comprehensive guides and tutorials for every aspect of EurekaBox
-          </p>
-        </div>
-
-        <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="not-prose grid gap-x-4 sm:grid-cols-3">
           <TopicCard
             title="Managing Context"
             description="Learn how to bring together and manage context from across your documentation system"
