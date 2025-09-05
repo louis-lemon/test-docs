@@ -2,16 +2,16 @@
 
 import Link from 'next/link';
 import { useEffect, useState } from 'react';
-import { 
-  Globe, 
-  Cloud, 
-  Wrench, 
-  BookOpen, 
-  Bot, 
-  Zap, 
-  Lightbulb, 
-  Search, 
-  Compass 
+import {
+  Globe,
+  Cloud,
+  Wrench,
+  BookOpen,
+  Bot,
+  Zap,
+  Lightbulb,
+  Search,
+  Compass
 } from 'lucide-react';
 
 // Search button component that integrates with Fumadocs search
@@ -230,32 +230,9 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Features Section */}
-      <section className="py-20 px-6 max-w-7xl mx-auto w-full text-center">
+      {/* TODO: add some Section */}
+      <section className="py-10 px-6 max-w-7xl mx-auto w-full text-center">
         <div className="text-fd-muted-foreground space-y-4">
-          <p className="text-2xl font-semibold mb-8 text-fd-foreground">Key Features</p>
-          <div className="flex flex-wrap justify-center gap-8 text-lg">
-            <span className="flex items-center gap-3">
-              <span className="text-green-500 text-xl">✨</span>
-              자동 MDX 생성
-            </span>
-            <span className="flex items-center gap-3">
-              <span className="text-blue-500 text-xl">🎨</span>
-              카테고리별 구조화
-            </span>
-            <span className="flex items-center gap-3">
-              <span className="text-purple-500 text-xl">🚀</span>
-              GitHub Pages 배포
-            </span>
-            <span className="flex items-center gap-3">
-              <span className="text-orange-500 text-xl">📱</span>
-              반응형 디자인
-            </span>
-            <span className="flex items-center gap-3">
-              <span className="text-indigo-500 text-xl">🔍</span>
-              전문 검색
-            </span>
-          </div>
         </div>
       </section>
     </main>
