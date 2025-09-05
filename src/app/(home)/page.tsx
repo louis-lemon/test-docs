@@ -118,9 +118,7 @@ export default function HomePage() {
 
             {/* Floating Search Bar */}
             <div className="max-w-xl mx-auto mb-16">
-              <div className="backdrop-blur-sm bg-white/10 border border-white/20 rounded-xl p-1">
                 <SearchButton />
-              </div>
             </div>
 
             {/* Feature highlights with white text */}
