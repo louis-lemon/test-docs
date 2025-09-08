@@ -2,6 +2,7 @@ import defaultMdxComponents from 'fumadocs-ui/mdx';
 import type { MDXComponents } from 'mdx/types';
 import Image from 'next/image';
 import { getImagePath } from '@/lib/image-utils';
+import { Mermaid } from '@/components/mdx/mermaid';
 
 // Custom image component that handles dynamic dimensions
 const CustomImage = ({ src, alt, ...props }: any) => {
@@ -38,6 +39,7 @@ export function getMDXComponents(components?: MDXComponents): MDXComponents {
   return {
     ...defaultMdxComponents,
     img: CustomImage,
+    Mermaid,
     ...components,
   };
 }

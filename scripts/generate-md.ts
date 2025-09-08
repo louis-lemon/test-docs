@@ -47,6 +47,23 @@ const CACHE_DIR = path.join(process.cwd(), '.build-cache');
 const CACHE_VERSION = '2.0.0';
 const BATCH_SIZE = 10;
 
+// Mermaid detection and conversion
+function hasMermaidCharts(content: string): boolean {
+  return /```mermaid[\s\S]*?```/g.test(content);
+}
+
+function convertMermaidToMDX(content: string): string {
+  return content.replace(/```mermaid\n([\s\S]*?)```/g, (match, chart) => {
+    // Clean up the chart content and escape for JSX
+    const cleanChart = chart.trim()
+      .replace(/\\/g, '\\\\')  // Escape backslashes
+      .replace(/"/g, '\\"')    // Escape double quotes
+      .replace(/\n/g, '\\n')   // Convert newlines to escaped newlines
+      .replace(/\r/g, '');     // Remove carriage returns
+    return `<Mermaid chart={"${cleanChart}"} />`;
+  });
+}
+
 // Slug generation
 function generateSlug(doc: EurekaDocument): string {
   if (doc.slug) return doc.slug;
@@ -267,6 +284,11 @@ async function processContent(
       }
   );
 
+  // Mermaid 코드 블록을 MDX 컴포넌트로 변환
+  if (hasMermaidCharts(processed)) {
+    processed = convertMermaidToMDX(processed);
+  }
+
   // 특수 문자 정리
   processed = processed
       .replace(/\u00A0/g, ' ')
@@ -348,10 +370,11 @@ function getDocumentPath(
     doc: EurekaDocument,
     slug: string,
     parentDoc?: EurekaDocument,
-    parentSlug?: string
+    parentSlug?: string,
+    hasMermaid: boolean = false
 ): string {
-  // 파일명은 항상 ID 사용
-  const fileName = `${doc.id}.md`;
+  // 파일명은 항상 ID 사용, mermaid가 있으면 .mdx 확장자 사용
+  const fileName = `${doc.id}.${hasMermaid ? 'mdx' : 'md'}`;
 
   if (parentDoc) {
     const parentCategory = sanitizePath(parentDoc.category || 'uncategorized');
@@ -416,7 +439,8 @@ async function processBatch(
             const slug = context.slugMap.get(doc.id)!;
             const parentDoc = doc.parentId ? context.documents.get(doc.parentId) : undefined;
             const parentSlug = parentDoc ? context.slugMap.get(parentDoc.id) : undefined;
-            const filePath = getDocumentPath(doc, slug, parentDoc, parentSlug);
+            const hasMermaid = hasMermaidCharts(doc.readme || '');
+            const filePath = getDocumentPath(doc, slug, parentDoc, parentSlug, hasMermaid);
 
             await createMarkdownFile(doc, filePath, context);
           } catch (error) {
@@ -550,7 +574,8 @@ async function generateMarkdown(): Promise<void> {
       const parentSlug = parentDoc ? context.slugMap.get(parentDoc.id) : undefined;
 
       // 파일 경로 생성
-      const filePath = getDocumentPath(doc, slug, parentDoc, parentSlug);
+      const hasMermaid = hasMermaidCharts(doc.readme || '');
+      const filePath = getDocumentPath(doc, slug, parentDoc, parentSlug, hasMermaid);
       console.log(`Processing ${doc.id} -> ${path.relative(process.cwd(), filePath)}`);
 
       // 마크다운 파일 생성
@@ -611,12 +636,14 @@ async function generateMarkdown(): Promise<void> {
           }
 
           // index.md 파일 생성 (부모 문서 내용)
-          const indexPath = path.join(parentDir, 'index.md');
+          const parentHasMermaid = hasMermaidCharts(doc.readme || '');
+          const indexPath = path.join(parentDir, `index.${parentHasMermaid ? 'mdx' : 'md'}`);
           await createMarkdownFile(doc, indexPath, context);
 
           // 자식 문서들 생성
           for (const child of children) {
-            const childPath = path.join(parentDir, `${child.id}.md`);
+            const childHasMermaid = hasMermaidCharts(child.readme || '');
+            const childPath = path.join(parentDir, `${child.id}.${childHasMermaid ? 'mdx' : 'md'}`);
             await createMarkdownFile(child, childPath, context);
           }
 
