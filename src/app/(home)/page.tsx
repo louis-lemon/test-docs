@@ -25,10 +25,21 @@ export default function HomePage() {
             <div className="text-center">
               {/* Main heading with white text */}
               <h1 className="text-white font-semibold" style={{ fontSize: '28px', margin: 0 }}>
-                Welcome to <span className="text-orange-400">LemonCloud</span>
+                Welcome to{' '}
+                <span
+                  style={{
+                    background: 'linear-gradient(102deg, rgb(255, 212, 95) -3.17%, rgb(255, 164, 90) 40.51%, rgb(255, 98, 0) 89.47%)',
+                    WebkitBackgroundClip: 'text',
+                    WebkitTextFillColor: 'transparent',
+                    backgroundClip: 'text',
+                    color: 'transparent'
+                  }}
+                >
+                  EurekaCodes
+                </span>
               </h1>
               <p className="text-white font-normal mt-4 max-w-2xl mx-auto" style={{ fontSize: '16px' }}>
-                Transform how you build and document software systems with intelligent automation
+                Stress-free AI DevOps; From Infrastructure to Scalable Microservices
               </p>
 
               {/* Floating Search Bar */}
